@@ -1,5 +1,7 @@
 package entities.loan_calculator;
 
+import constants.InterestRate;
+
 public class LoanCalculatorImpl implements LoanCalculator{
 
     private double amount;
@@ -8,8 +10,6 @@ public class LoanCalculatorImpl implements LoanCalculator{
     public LoanCalculatorImpl(double amount, int months) {
         this.setAmount(amount);
         this.setMonths(months);
-
-
     }
 
     private void setAmount(double amount) {
@@ -28,6 +28,12 @@ public class LoanCalculatorImpl implements LoanCalculator{
 
     @Override
     public String calculate() {
-        return null;
+
+        double monthlyInterestRate = InterestRate.INTEREST_RATE / 12.0;
+
+        double monthlyPayment = (this.amount * monthlyInterestRate)
+                / (1 - Math.pow(1 + monthlyInterestRate, -this.months));
+
+        return String.format("Your monthly payment is %.2f for %d", monthlyPayment, this.months);
     }
 }

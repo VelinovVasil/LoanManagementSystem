@@ -1,21 +1,55 @@
 package entities.loan;
 
-import entities.loan_calculator.LoanCalculator;
+import constants.InterestRate;
 
 public class LoanImpl implements Loan {
-
-    private LoanCalculator loanCalculator;
     private double amountLoan;
     private double interestRate;
     private int periodInMonths;
+    private double amountForPayment;
 
-    @Override
-    public void payment(double amountForPayment) {
+    public LoanImpl(double amountLoan, int periodInMonths) {
+        this.setAmountLoan(amountLoan);
+        this.setPeriodInMonths(periodInMonths);
 
+        double monthlyInterestRate = InterestRate.INTEREST_RATE / 12.0;
+
+        this.amountForPayment = (this.amountLoan * monthlyInterestRate)
+                / (1 - Math.pow(1 + monthlyInterestRate, -this.periodInMonths));
+
+        this.payment();
+    }
+
+    private void setAmountLoan(double amountLoan) {
+        if (amountLoan <= 0) {
+            throw new IllegalArgumentException("Amount cannot be below or equal to zero.");
+        }
+        this.amountLoan = amountLoan;
+    }
+
+    private void setPeriodInMonths(int periodInMonths) {
+        if (periodInMonths <= 0) {
+            throw new IllegalArgumentException("Period cannot be below or equal to zero.");
+        }
+        this.periodInMonths = periodInMonths;
     }
 
     @Override
-    public void remodeling(double amountLeft, double interestRate, int periodInMonths) {
+    public String payment() {
+        if (this.amountLoan <= 0) {
 
+            return String.format("Your loan is being paid!");
+
+        }
+        this.amountLoan -= amountForPayment;
+
+        return String.format("Successfully paid %.2f as a monthly payment for your loan.", this.amountForPayment);
     }
+
+    @Override
+    public double getAmountForPayment() {
+        return this.amountForPayment;
+    }
+
+
 }
