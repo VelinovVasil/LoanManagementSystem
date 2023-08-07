@@ -4,5 +4,6 @@ public interface Loan {
 
     String payment();
     double getAmountForPayment();
+    boolean isPaid();
 
 }

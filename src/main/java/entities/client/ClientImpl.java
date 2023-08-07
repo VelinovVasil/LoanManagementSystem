@@ -10,7 +10,6 @@ public class ClientImpl implements Client {
     private String name;
     private String ID;
     private Loan loan;
-
     private double funds;
 
     public ClientImpl(String name, String ID, double funds) {
@@ -73,6 +72,11 @@ public class ClientImpl implements Client {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public Loan getLoan() {
+        return this.loan;
     }
 
 

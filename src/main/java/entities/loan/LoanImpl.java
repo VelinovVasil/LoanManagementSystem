@@ -36,11 +36,13 @@ public class LoanImpl implements Loan {
 
     @Override
     public String payment() {
-        if (this.amountLoan <= 0) {
+        if (this.amountLoan - this.amountForPayment <= 0) {
 
+            this.amountLoan = 0;
             return String.format("Your loan is being paid!");
 
         }
+
         this.amountLoan -= amountForPayment;
 
         return String.format("Successfully paid %.2f as a monthly payment for your loan.", this.amountForPayment);
@@ -49,6 +51,14 @@ public class LoanImpl implements Loan {
     @Override
     public double getAmountForPayment() {
         return this.amountForPayment;
+    }
+
+    @Override
+    public boolean isPaid() {
+        if (this.amountLoan <= 0) {
+            return true;
+        }
+        return false;
     }
 
 
