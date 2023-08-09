@@ -1,4 +1,4 @@
-package controller;
+package core;
 
 import entities.client.Client;
 import entities.client.ClientImpl;
@@ -24,6 +24,10 @@ public class ControllerImpl implements Controller {
     @Override
     public String removeClient(String name) {
 
+        if (this.clientRepository.findByName(name) == null) {
+            throw new IllegalStateException("No client with this name is found.");
+        }
+
         this.clientRepository.removeClient(this.clientRepository.findByName(name));
 
         return String.format("Successfully added %s as a new client.", name);
@@ -32,11 +36,19 @@ public class ControllerImpl implements Controller {
     @Override
     public String offer(String clientName, double amount, int months) {
 
+        if (this.clientRepository.findByName(clientName) == null) {
+            throw new IllegalStateException("No client with this name is found.");
+        }
+
         return this.clientRepository.findByName(clientName).offer(amount, months);
     }
 
     @Override
     public String newLoan(String clientName, double amountLoan, int periodInMonths) {
+
+        if (this.clientRepository.findByName(clientName) == null) {
+            throw new IllegalStateException("No client with this name is found.");
+        }
 
         if (this.clientRepository.findByName(clientName).getLoan() != null) {
 
@@ -50,6 +62,10 @@ public class ControllerImpl implements Controller {
 
     @Override
     public String monthlyPayment(String clientName) {
+
+        if (this.clientRepository.findByName(clientName) == null) {
+            throw new IllegalStateException("No client with this name is found.");
+        }
 
         this.clientRepository.findByName(clientName).payment();
 
